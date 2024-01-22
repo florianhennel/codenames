@@ -244,7 +244,7 @@ io.on("connection", (socket) => {
     socket.to(gameid).emit("end-guess");
   });
   socket.on("hint", (player, key, gameid) => {
-    socket.to(gameid).emit("get-hint", player, key);
+    socket.to(gameid).emit("get-hint", key);
   });
   socket.on("name-change", async (oldName,newName,gameid)=>{
     socket.to(gameid).emit("name-changed",oldName,newName);

@@ -306,7 +306,7 @@ function Game(){
         }
         socket?.emit('hint',player,key,gameID);
     }
-    socket?.on('get-hint',(player,key)=>{
+    socket?.on('get-hint',(key)=>{
         if (hintedCards) {
             if (hintedCards.includes(key)) {
                 setHintedCards(hintedCards.filter(card=>card != key));
