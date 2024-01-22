@@ -20,7 +20,7 @@ const HTTPserver = http.createServer(app);
 
 const io = socketIo(HTTPserver, {
   cors: {
-    origin: "https://jg7jbvcz-5173.euw.devtunnels.ms",
+    origin: "https://codenames-frontend-hf8p.onrender.com",
   },
 });
 
