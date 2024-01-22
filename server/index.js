@@ -20,7 +20,7 @@ const HTTPserver = http.createServer(app);
 
 const io = socketIo(HTTPserver, {
   cors: {
-    origin: "https://codenames-frontend-hf8p.onrender.com",
+    origin: ["https://codenames-frontend-hf8p.onrender.com","http://localhost:5173"],
   },
 });
 
@@ -240,7 +240,10 @@ io.on("connection", (socket) => {
       }
     }
   );
-  socket.on("end-guessing", (gameid) => {
+  socket.on("end-guessing", async (gameid) => {
+    const game = await RoomModel.findById(gameid);
+    game.currentTeam === "red"?game.currentTeam = "blue":game.currentTeam = "red";
+    await game.save();
     socket.to(gameid).emit("end-guess");
   });
   socket.on("hint", (player, key, gameid) => {
@@ -258,12 +261,9 @@ io.on("connection", (socket) => {
     if (playerInTeam) {
       playerInTeam.name = newName;
     }
-    else{
-      console.log("player not in a Team");
-    }
     await game.save();
-    
-  });
+    console.log(oldName, " changed their name to ", newName);
+  })
   socket.on("leave-team", async (name,team,gameid)=>{
     const game = await RoomModel.findById(gameid);
     if (team === "blue") {

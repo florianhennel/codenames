@@ -19,7 +19,7 @@ interface GameInterface{
     tries:Number,
     admin:string,
     currentClue:ClueInterface,
-    curretTeam:"red"|"blue",
+    currentTeam:"red"|"blue",
 }
 interface localStorageInterface{
     gameid:string,
@@ -111,7 +111,7 @@ function Game(){
             setRevealedCards(game.revealedCards);
             setBlueCardsLeft(game.blueTeam.cardsLeft);
             setRedCardsLeft(game.redTeam.cardsLeft);
-            setCurrentTeam(game.curretTeam);
+            setCurrentTeam(game.currentTeam);
             setGameLog(game.game_log);
             setTries(game.tries);
             setAdmin(game.admin);
@@ -188,6 +188,9 @@ function Game(){
         }
         addLog(log);
     })
+    useEffect(()=>{
+        console.log(bluePlayers,redPlayers);
+    },[bluePlayers,redPlayers]);
     useEffect(()=>{
         if (blueCardsLeft === 0 || redCardsLeft === 0) {
             gameOver()
@@ -413,17 +416,20 @@ function Game(){
     const changeNickname = ()=>{
         if (namechangeInput != "" && namechangeInput != name) {
             if (game?.players.find(p=>p.name===namechangeInput) === undefined) {
-                if (player) {
-                    const newBluePlayers:PlayerInterface[] = bluePlayers.filter(p=>p.name!=player.name);
-                    const newRedPlayers:PlayerInterface[] = redPlayers.filter(p=>p.name!=player.name);
-                    const newPlayer = player;
-                    newPlayer.name = namechangeInput;
-                    setPlayer(newPlayer);      
-                    if (player.team === "red") {   
-                        //newRedPlayers.push(newPlayer);
+                if (player) {             
+                    if (player.team === "red") {
+                        let newRedPlayers = redPlayers.filter(p=>p.name!=player.name);
+                        let newPlayer = player;
+                        newPlayer.name = namechangeInput;
+                        setPlayer(newPlayer);      
+                        newRedPlayers.push(newPlayer);
                         setRedPlayers(newRedPlayers);
-                    }else{          
-                        //newBluePlayers.push(newPlayer);
+                    }else{
+                        let newBluePlayers = bluePlayers.filter(p=>p.name!=player.name);    
+                        let newPlayer = player;
+                        newPlayer.name = namechangeInput;
+                        setPlayer(newPlayer);      
+                        newBluePlayers.push(newPlayer);
                         setBluePlayers(newBluePlayers);
                     }
                 }
@@ -449,25 +455,27 @@ function Game(){
         }
         setPlayerSettingsBtn(false);  
     }
-    socket?.on('name-changed',(oldName,newName)=>{
+    socket?.on('name-changed', (oldName, newName) => {  
         if (admin === oldName) {
-            setAdmin(newName);
+          setAdmin(newName);
         }
-        const bluePlayer = bluePlayers.find(p=>p.name===oldName);
-        const redPlayer = redPlayers.find(p=>p.name===oldName);
-        const newRedPlayers:PlayerInterface[] = redPlayers.filter(p=>p.name!=oldName);
-        const newBluePlayers:PlayerInterface[] = bluePlayers.filter(p=>p.name!=oldName);
-        if (bluePlayer) {
-            bluePlayer.name = newName;
-            newBluePlayers.push(bluePlayer);
-            setBluePlayers(newBluePlayers);
-            
-        }else if(redPlayer){   
-            redPlayer.name = newName;
-            newRedPlayers.push(redPlayer);
-            setRedPlayers(newRedPlayers);
-            console.log(newRedPlayers);
-        }
+      
+        let newBluePlayers = [...bluePlayers];
+        let newRedPlayers = [...redPlayers];
+      
+        const updatePlayerName = (playerList:PlayerInterface[], oldName:string, newName:string) => {
+          const index = playerList.findIndex((p) => p.name === oldName);
+      
+          if (index !== -1) {
+            playerList[index].name = newName;
+          }
+        };
+      
+        updatePlayerName(newBluePlayers, oldName, newName);
+        updatePlayerName(newRedPlayers, oldName, newName);
+      
+        setBluePlayers(newBluePlayers);
+        setRedPlayers(newRedPlayers);
     });
     const changeTeam = ()=>{
         if (player) {
@@ -487,6 +495,7 @@ function Game(){
         }else{
             setRedPlayers(redPlayers.filter(p=>p.name!=leftName));
         }
+        socket.removeListener("left-team");
     })
     if (!game || !revealedCards){
         return(
@@ -516,7 +525,7 @@ function Game(){
                 </div>
 
                 <div className="w-1/6 flex flex-col items-center">
-                    <button className={`capitalize bg-yellow-400 rounded-2xl text-center flex p-4 m-2 gap-2 items-center`} onClick={clickOnPlayerSettingsBtn}>{name} <img className=" w-4" src="/images/icons/icon_player.png" alt="" /> <span>{game.players.length}</span></button>
+                    <button className={`capitalize bg-yellow-400 rounded-2xl text-center flex p-4 m-2 gap-2 items-center`} onClick={clickOnPlayerSettingsBtn}>{name} <img className=" w-4" src="/images/icons/icon_player.png" alt="" /></button>
                     <div className={` relative bg-white opacity-95 p-3 ${playerSettingsBtn?"visible":"hidden"} w-full rounded-md flex flex-col  gap-2 justify-center items-center`}>
                         <div>Nickname</div>
                         <input className=" rounded-md ring-1 ring-black w-3/4 p-1" type="text" name="" id="" onChange={(event)=>setNameChangeInput(event.target.value)} />
