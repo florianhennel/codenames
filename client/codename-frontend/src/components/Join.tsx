@@ -21,7 +21,7 @@ function Join(){
       }
   const joinGame = async () => {
     if (nameInput.length>0) {
-       const response = await fetch("https://jg7jbvcz-3000.euw.devtunnels.ms/joinRoom",{
+       const response = await fetch("https://codenames-backend-rgry.onrender.com/joinRoom",{
             method:"POST",
             headers: {
                 'Content-Type': 'application/json'

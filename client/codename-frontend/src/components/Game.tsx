@@ -73,7 +73,7 @@ function Game(){
     const [playerSettingsBtn,setPlayerSettingsBtn] = useState<boolean>(false);
     const [namechangeInput,setNameChangeInput] = useState<string>("");
     const fetchingGame = async () => {
-        const response = await fetch(`https://jg7jbvcz-3000.euw.devtunnels.ms/${gameID}`, {
+        const response = await fetch(`https://codenames-backend-rgry.onrender.com/${gameID}`, {
             method: "GET",
             headers:{
                 'Content-Type': 'application/json',
@@ -357,7 +357,7 @@ function Game(){
     }
     const newGame = async ()=>{
         
-        const response = await fetch("https://jg7jbvcz-3000.euw.devtunnels.ms/createRoom",{
+        const response = await fetch("https://codenames-backend-rgry.onrender.com/createRoom",{
             method:"POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -408,7 +408,7 @@ function Game(){
         setPlayerSettingsBtn(!playerSettingsBtn);
     }
     const copyInvitationLink = ()=>{
-        navigator.clipboard.writeText(`https://jg7jbvcz-5173.euw.devtunnels.ms/game/${gameID}`);
+        navigator.clipboard.writeText(`https://codenames-backend-rgry.onrender.com/game/${gameID}`);
     }
     const changeNickname = ()=>{
         if (namechangeInput != "" && namechangeInput != name) {
