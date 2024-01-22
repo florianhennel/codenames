@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "./SocketContext";
 
@@ -17,29 +17,32 @@ function Home(){
         // Store the updated list back in localStorage
         localStorage.setItem('game', JSON.stringify(existingList));
       }
-  const createNewRoom = async () => {
-    if (nameInput.length>0) {
-       const response = await fetch("https://codenames-backend-rgry.onrender.com/createRoom",{
-        method:"POST",
-        headers: {
-            'Content-Type': 'application/json'
-          },
-        body:JSON.stringify({
-            name:nameInput,
-        })
-    })
-    const json = await response.json();
-    const id = json.roomid;
-    const gameObj = {gameid:id,name:nameInput};
-    
-    addObjectToList(gameObj);
-    socket?.emit('join-game',nameInput,id);
-    navigate(`/game/${id}`);
-     
-    }else{
-        alert("Nincs megadva a neved!")
+    const createNewRoom = async () => {
+        if (nameInput.length>0) {
+            const response = await fetch("https://codenames-backend-rgry.onrender.com/createRoom",{
+                method:"POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    name:nameInput,
+                })
+            })
+            const json = await response.json();
+            const id = json.roomid;
+            const gameObj = {gameid:id,name:nameInput};
+            
+            addObjectToList(gameObj);
+            socket?.emit('join-game',nameInput,id);
+            navigate(`/game/${id}`);
+        }
+        else {
+            alert("Nincs megadva a neved!")
+        }
     }
-  }
+    useEffect(()=>{
+        document.title = "Codenames | Creating New Game" ;
+    },[])
     return(
         <div className="flex items-center justify-center flex-col bg-gradient-to-l from-red-400 to-teal-500 h-full w-full">
             <div className="rounded-xl bg-white flex items-center justify-center flex-col gap-4 p-7">

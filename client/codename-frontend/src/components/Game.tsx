@@ -82,7 +82,8 @@ function Game(){
             const json = await response.json();
             setGame(json.game);
       }
-    useEffect(()=>{        
+    useEffect(()=>{
+        document.title = "Codenames";       
         if (localStorage.getItem('game')!=null) {
             const listString = localStorage.getItem('game');
             const list:localStorageInterface[] = listString ? JSON.parse(listString) : [];

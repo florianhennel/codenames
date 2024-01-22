@@ -43,6 +43,7 @@ function Join(){
     
   }
   useEffect(() => {
+    document.title = "Codenames | Join A Game" ;
     // Check if the gameid is present in localStorage
     const listString = localStorage.getItem('game');
     const list: MyObject[] = listString ? JSON.parse(listString) : [];
