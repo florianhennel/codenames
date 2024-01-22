@@ -124,7 +124,6 @@ function Game(){
                 setTeam(existingplayer.team);
                 socket?.emit('join-team',name,existingplayer.team,existingplayer.role,gameID);
             }
-            setCurrentTeam(game.startTeam);
             setGivenClue(game.currentClue != undefined);
             setClue(game.currentClue);
             console.log(game);
@@ -415,18 +414,17 @@ function Game(){
         if (namechangeInput != "" && namechangeInput != name) {
             if (game?.players.find(p=>p.name===namechangeInput) === undefined) {
                 if (player) {
+                    const newBluePlayers:PlayerInterface[] = bluePlayers.filter(p=>p.name!=player.name);
+                    const newRedPlayers:PlayerInterface[] = redPlayers.filter(p=>p.name!=player.name);
                     const newPlayer = player;
                     newPlayer.name = namechangeInput;
-                    setPlayer(newPlayer);
-                    const newBluePlayers:PlayerInterface[] = bluePlayers.filter(p=>p.name!=name);
-                    const newRedPlayers:PlayerInterface[] = redPlayers.filter(p=>p.name!=name);
-                    
+                    setPlayer(newPlayer);      
                     if (player.team === "red") {   
                         //newRedPlayers.push(newPlayer);
                         setRedPlayers(newRedPlayers);
                     }else{          
                         //newBluePlayers.push(newPlayer);
-                        setRedPlayers(newBluePlayers);
+                        setBluePlayers(newBluePlayers);
                     }
                 }
                 if (admin === name) {
@@ -462,7 +460,7 @@ function Game(){
         if (bluePlayer) {
             bluePlayer.name = newName;
             newBluePlayers.push(bluePlayer);
-            setRedPlayers(newBluePlayers);
+            setBluePlayers(newBluePlayers);
             
         }else if(redPlayer){   
             redPlayer.name = newName;
@@ -512,7 +510,7 @@ function Game(){
                                 ))
                             }
                         </div>
-                        <button className={` w-2/3 capitalize bg-yellow-400 rounded-2xl text-center p-2 text-lg ${team?"visible":"hidden"}`} onClick={copyInvitationLink}>Copy Invitation Link</button>
+                        <button className={` w-2/3 capitalize bg-yellow-400 rounded-2xl text-center p-2 text-lg`} onClick={copyInvitationLink}>Copy Invitation Link</button>
                     
                     </div>
                 </div>
