@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwindcss /aspect-ratio;
+#root {
+  height: 100vh;
+}
