@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSocket } from "./SocketContext";
 interface MyObject {
     gameid: string;
     name: string;
@@ -9,7 +8,6 @@ function Join(){
     const [nameInput,changeNameInput] = useState<string>("");
     const navigate = useNavigate();
     const gameid = useParams().id;
-    const socket = useSocket();
     function addObjectToList(newObject:MyObject) {
         // Retrieve the existing list from localStorage
         const existingListString = localStorage.getItem('game');

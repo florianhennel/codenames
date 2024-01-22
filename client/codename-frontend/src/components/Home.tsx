@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "./SocketContext";
-import { io } from "socket.io-client";
 
 function Home(){
     const [nameInput,changeNameInput] = useState<string>("");

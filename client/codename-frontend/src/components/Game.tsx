@@ -292,7 +292,7 @@ function Game(){
         }
     })
     const clickOnCard = (event:React.BaseSyntheticEvent)=>{
-        const color = event.currentTarget.getAttribute('data-color');
+        
         const key = event.target.getAttribute('data-key');
         if (hintedCards) {
             if (hintedCards.includes(key)) {
