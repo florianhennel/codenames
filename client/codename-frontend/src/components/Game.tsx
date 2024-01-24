@@ -73,7 +73,7 @@ function Game(){
     const [playerSettingsBtn,setPlayerSettingsBtn] = useState<boolean>(false);
     const [namechangeInput,setNameChangeInput] = useState<string>("");
     const fetchingGame = async () => {
-        const response = await fetch(`https://codenames-backend-rgry.onrender.com/${gameID}`, {
+        const response = await fetch(`http://localhost:3000/${gameID}`, {
             method: "GET",
             headers:{
                 'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ function Game(){
         }
         
     },[game]);
-    socket?.on('userLeft',(user)=>{
+    socket?.once('userLeft',(user)=>{
         setBluePlayers(bluePlayers.filter(pl=>pl.name!=user));
         setRedPlayers(redPlayers.filter(pl=>pl.name!=user));
     });
@@ -148,7 +148,7 @@ function Game(){
         })
         socket?.emit('join-team',name,color,role,gameID);
     }
-    socket?.on('team-join',(name:string,color:"red"|"blue",role:"spymaster"|"operative")=>{
+    socket?.once('team-join',(name:string,color:"red"|"blue",role:"spymaster"|"operative")=>{
         const newPlayer = {
             name:name,
             role:role,
@@ -176,7 +176,7 @@ function Game(){
         addLog(log);
         
     }
-    socket?.on('get-clue',(player:PlayerInterface,getclue:ClueInterface)=>{
+    socket?.once('get-clue',(player:PlayerInterface,getclue:ClueInterface)=>{
         setGivenClue(true);
         setClue({
             text:getclue.text,
@@ -188,9 +188,6 @@ function Game(){
         }
         addLog(log);
     })
-    useEffect(()=>{
-        console.log(bluePlayers,redPlayers);
-    },[bluePlayers,redPlayers]);
     useEffect(()=>{
         if (blueCardsLeft === 0 || redCardsLeft === 0) {
             gameOver()
@@ -258,13 +255,14 @@ function Game(){
             setTries(0);
         }
     };
-    socket?.on('get-guess',(guessPlayer:PlayerInterface,correct:boolean,blue_red:boolean,key:string,newBlueCardsLeft:Number,newRedCardsLeft:Number,grayCard:boolean,newTries:number,newcurrentTeam:"blue"|"red")=>{
+    socket?.once('get-guess',(guessPlayer:PlayerInterface,correct:boolean,blue_red:boolean,key:string,newBlueCardsLeft:Number,newRedCardsLeft:Number,grayCard:boolean,newTries:number,newcurrentTeam:"blue"|"red")=>{
         reveal(key);
         if (clue) {
             if (correct) {
                 setBlueCardsLeft(Number(newBlueCardsLeft));
                 setRedCardsLeft(Number(newRedCardsLeft));
                 setTries(newTries);
+                
                 if (currentTeam != newcurrentTeam) {
                     setCurrentTeam(currentTeam==="blue"?"red":"blue");
                     setHintedCards([]);
@@ -309,7 +307,7 @@ function Game(){
         }
         socket?.emit('hint',player,key,gameID);
     }
-    socket?.on('get-hint',(key)=>{
+    socket?.once('get-hint',(key)=>{
         if (hintedCards) {
             if (hintedCards.includes(key)) {
                 setHintedCards(hintedCards.filter(card=>card != key));
@@ -341,7 +339,7 @@ function Game(){
         setTries(0);
         socket?.emit('end-guessing',gameID);
     }
-    socket?.on('end-guess',()=>{
+    socket?.once('end-guess',()=>{
         setCurrentTeam(currentTeam==="blue"?"red":"blue");
         setGivenClue(false);
         setClue(undefined);
@@ -391,7 +389,7 @@ function Game(){
         // Store the updated list back in localStorage
         localStorage.setItem('game', JSON.stringify(existingList));
       }
-    socket?.on('new-game',(newGameId)=>{
+    socket?.once('new-game',(newGameId)=>{
         if (name) {
             const gameObj = {
                 gameid:newGameId,
@@ -412,6 +410,7 @@ function Game(){
     }
     const copyInvitationLink = ()=>{
         navigator.clipboard.writeText(`https://codenames-backend-rgry.onrender.com/game/${gameID}`);
+        setPlayersBtn(false);
     }
     const changeNickname = ()=>{
         if (namechangeInput != "" && namechangeInput != name) {
@@ -455,7 +454,7 @@ function Game(){
         }
         setPlayerSettingsBtn(false);  
     }
-    socket?.on('name-changed', (oldName, newName) => {  
+    socket?.once('name-changed', (oldName, newName) => {  
         if (admin === oldName) {
           setAdmin(newName);
         }
@@ -486,10 +485,11 @@ function Game(){
             }
             socket?.emit('leave-team',name,team,gameID);
             setTeam(null);
-            setPlayer(undefined);          
+            setPlayer(undefined);     
         }
+        setPlayerSettingsBtn(false);
     }
-    socket?.on('left-team',(leftName,team)=>{
+    socket?.once('left-team',(leftName,team)=>{
         if (team==="blue") {
             setBluePlayers(bluePlayers.filter(p=>p.name!=leftName));
         }else{
@@ -558,7 +558,7 @@ function Game(){
                             <div className={` flex flex-row m-4 p-2 gap-4 items-center uppercase justify-center text-3xl bg-white font-bold ring-2 ring-black rounded-xl`}>
                             {clue?.text +" " + clue?.number}
                             </div>
-                            <button className={`p-2 w-2/3 self-center bg-yellow-300 font-medium text-sm rounded-xl h-1/2 ${(player?.role === "operative" && player?.team === currentTeam)?"visible":"hidden"}`} onClick={endGuessing}>End guessing</button>
+                            <button className={`p-2 w-3/4 self-center bg-yellow-300 font-medium text-sm rounded-xl h-1/2 ${(player?.role === "operative" && player?.team === currentTeam)?"visible":"hidden"}`} onClick={endGuessing}>End guessing</button>
                         </div>
                         :
                         (player?.team === currentTeam && player?.role ==="spymaster")?

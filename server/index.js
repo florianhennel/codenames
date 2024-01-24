@@ -191,53 +191,23 @@ io.on("connection", (socket) => {
       } else {
         if (color === "blue") {
           newBlueCardsLeft = Number(blueCardsLeft) - 1;
-          newCurrentTeam = "red";
+          newCurrentTeam = "blue";
         } else if (color === "red") {
           newRedCardsLeft = Number(redCardsLeft) - 1;
-          newCurrentTeam = "blue";
+          newCurrentTeam = "red";
         }
       }
       const newTries = !lastTrie && correct ? tries + 1 : 0;
-      try {
-        const updatedDocument = await RoomModel.findOneAndUpdate(
-          { _id: gameid },
-          {
-            $push: { revealedCards: card.img },
-            $set: {
-              "blueTeam.cardsLeft": newBlueCardsLeft,
-              "redTeam.cardsLeft": newRedCardsLeft,
-              tries: newTries,
-              currentTeam: newCurrentTeam,
-            },
-          },
-          { new: true }
-        );
-
-        if (!updatedDocument) {
-          console.error("Document not found");
-          // Handle the case where the document is not found
-          return;
-        }
-
-        //console.log("Document updated successfully:", updatedDocument);
-        socket
-          .to(gameid)
-          .emit(
-            "get-guess",
-            player,
-            correct,
-            blue_red,
-            key,
-            newBlueCardsLeft,
-            newRedCardsLeft,
-            grayCard,
-            newTries,
-            newCurrentTeam
-          );
-      } catch (err) {
-        console.error("Error updating document:", err);
-        // Handle the error appropriately
-      }
+      const game = await RoomModel.findById(gameid);
+      game.revealedCards.push(card.img);
+      game.blueTeam.cardsLeft = newBlueCardsLeft;
+      game.redTeam.cardsLeft = newRedCardsLeft;
+      game.tries = newTries;
+      game.currentTeam = newCurrentTeam;
+      if(!correct || lastTrie) game.currentClue = null;
+      await game.save();
+      console.log("correct: ",correct, "blue_red: ",blue_red,key,newBlueCardsLeft,newRedCardsLeft,grayCard,"newTries: ",newTries, "newCurrentTeam: ",newCurrentTeam, "lastTrie: ",lastTrie);
+      socket.to(gameid).emit("get-guess",player,correct,blue_red,key,newBlueCardsLeft,newRedCardsLeft,grayCard,newTries,newCurrentTeam);
     }
   );
   socket.on("end-guessing", async (gameid) => {
@@ -314,7 +284,8 @@ app.post("/createRoom", (req, res) => {
     cards = req.body.cards;
   }
   let deck = newDeck(cards);
-  const startTeam = Math.random() <= 0.5 ? "blue" : "red";
+  const blues = deck.reduce(((prev,current)=>current.team==="blue"?prev+1:prev),0); 
+  const startTeam = blues === 9? "blue" : "red";
   const newRoom = new RoomModel({
     startTeam: startTeam,
     game_log: [],
