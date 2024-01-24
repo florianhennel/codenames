@@ -213,6 +213,8 @@ io.on("connection", (socket) => {
   socket.on("end-guessing", async (gameid) => {
     const game = await RoomModel.findById(gameid);
     game.currentTeam === "red"?game.currentTeam = "blue":game.currentTeam = "red";
+    game.currentClue = null;
+    game.tries = newTries;
     await game.save();
     socket.to(gameid).emit("end-guess");
   });
