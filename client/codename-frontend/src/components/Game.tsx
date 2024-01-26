@@ -73,7 +73,7 @@ function Game(){
     const [playerSettingsBtn,setPlayerSettingsBtn] = useState<boolean>(false);
     const [namechangeInput,setNameChangeInput] = useState<string>("");
     const fetchingGame = async () => {
-        const response = await fetch(`http://localhost:3000/${gameID}`, {
+        const response = await fetch(`https://codenames-backend-rgry.onrender.com/${gameID}`, {
             method: "GET",
             headers:{
                 'Content-Type': 'application/json',

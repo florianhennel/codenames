@@ -19,7 +19,7 @@ function Home(){
       }
     const createNewRoom = async () => {
         if (nameInput.length>0) {
-            const response = await fetch("http://localhost:3000/createRoom",{
+            const response = await fetch("https://codenames-backend-rgry.onrender.com/createRoom",{
                 method:"POST",
                 headers: {
                     'Content-Type': 'application/json'
