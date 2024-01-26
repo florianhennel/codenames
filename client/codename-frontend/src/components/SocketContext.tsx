@@ -9,7 +9,7 @@ interface SocketProviderProps {
 }
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
-  const serverUrl = "http://localhost:3000/"; // Replace with your Socket.io server URL
+  const serverUrl = "https://codenames-backend-rgry.onrender.com/"; // Replace with your Socket.io server URL
   const socket = io(serverUrl);
 
   useEffect(() => {
