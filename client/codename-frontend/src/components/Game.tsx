@@ -561,7 +561,7 @@ function Game(){
                     </div>
                     {
                         givenClue?
-                        <div key={"clue"} className="flex flex-col h-1/12">
+                        <div key={"clue"} className={`flex flex-col h-1/12 ${winner=== undefined?"visible":"hidden"}`}>
                             <div className={` flex flex-row m-4 p-2 gap-4 items-center uppercase justify-center text-3xl bg-white font-bold ring-2 ring-black rounded-xl`}>
                             {clue?.text +" " + clue?.number}
                             </div>
