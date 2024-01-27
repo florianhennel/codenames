@@ -264,7 +264,6 @@ function Game(){
     };
     socket?.once('get-guess',(guessPlayer:PlayerInterface,correct:boolean,blue_red:boolean,key:string,newBlueCardsLeft:Number,newRedCardsLeft:Number,grayCard:boolean,newTries:number,newcurrentTeam:"blue"|"red")=>{
         reveal(key);
-        if (clue) {
             if (correct) {
                 setBlueCardsLeft(Number(newBlueCardsLeft));
                 setRedCardsLeft(Number(newRedCardsLeft));
@@ -297,7 +296,6 @@ function Game(){
             }else{
                 gameOver();
             }  
-        }
     })
     const clickOnCard = (event:React.BaseSyntheticEvent)=>{
         
