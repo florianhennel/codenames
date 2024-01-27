@@ -288,7 +288,7 @@ function Game(){
                 setTries(0);
                 
             }else{
-                gameOver(); 
+                gameOver();
             }  
         }
     })
@@ -544,7 +544,7 @@ function Game(){
                 </div>
                 
                 <div className="flex flex-col w-1/2 h-full items-center justify-start -mt-10">
-                    <div key={"cards"} className="flex flex-row flex-wrap justify-between aspect-square h-11/12">
+                    <div key={"cards"} className={`flex flex-row flex-wrap justify-between aspect-square h-11/12 ${winner!=undefined?"hidden":"visible"}`}>
                         {
                             game?.cards.map(card=>(
                                 <Card color={card.team} img={card.img} currentTeam={currentTeam!} givenClue={givenClue!} guess={guess} player={player!} cardsLeft={currentTeam==="blue"?blueCardsLeft:redCardsLeft} grayCards={grayCards} revealed={revealedCards.includes(card.img)} hint={clickOnCard} hinted={hintedCards.includes(card.img)} />
@@ -558,10 +558,10 @@ function Game(){
                             <div className={` flex flex-row m-4 p-2 gap-4 items-center uppercase justify-center text-3xl bg-white font-bold ring-2 ring-black rounded-xl`}>
                             {clue?.text +" " + clue?.number}
                             </div>
-                            <button className={`p-2 w-3/4 self-center bg-yellow-300 font-medium text-sm rounded-xl h-1/2 ${(player?.role === "operative" && player?.team === currentTeam)?"visible":"hidden"}`} onClick={endGuessing}>End guessing</button>
+                            <button className={`p-2 w-3/4 self-center bg-yellow-300 font-medium text-sm rounded-xl h-1/2 ${(player?.role === "operative" && player?.team === currentTeam && !winner)?"visible":"hidden"}`} onClick={endGuessing}>End guessing</button>
                         </div>
                         :
-                        (player?.team === currentTeam && player?.role ==="spymaster")?
+                        (player?.team === currentTeam && player?.role ==="spymaster" && !winner)?
                             <ClueInput key={"clueInput"} giveClue={clueHandler} />:
                             <div key={"waiting"} className="flex flex-row w-3/4 p-2 gap-4 h-1/12 items-center justify-center text-xl font-thin">
                                 Waiting for clue
