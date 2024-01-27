@@ -195,6 +195,13 @@ io.on("connection", (socket) => {
         } else if (color === "red") {
           newRedCardsLeft = Number(redCardsLeft) - 1;
           newCurrentTeam = "red";
+        }else{
+          if (player.team === "blue") {
+            newCurrentTeam = "red";
+          }
+          else{
+            newCurrentTeam = "blue";
+          }
         }
       }
       const newTries = !lastTrie && correct ? tries + 1 : 0;

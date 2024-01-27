@@ -126,6 +126,12 @@ function Game(){
             }
             setGivenClue(game.currentClue != undefined);
             setClue(game.currentClue);
+            if (game.revealedCards.length>0) {
+                const black = game.cards.find(card=>card.team==="black");
+                if (game.revealedCards.includes(black!.img)) {
+                    setWinner(game.currentTeam);
+                }
+            }
             console.log(game);
         }
         
@@ -245,6 +251,7 @@ function Game(){
             setTries(0);
         }
         else if (color === "black"){
+            setCurrentTeam(currentTeam==="blue"?"red":"blue");
             gameOver();
         }else{
             setGrayCards(Number(grayCards)-1);
@@ -558,10 +565,10 @@ function Game(){
                             <div className={` flex flex-row m-4 p-2 gap-4 items-center uppercase justify-center text-3xl bg-white font-bold ring-2 ring-black rounded-xl`}>
                             {clue?.text +" " + clue?.number}
                             </div>
-                            <button className={`p-2 w-3/4 self-center bg-yellow-300 font-medium text-sm rounded-xl h-1/2 ${(player?.role === "operative" && player?.team === currentTeam && !winner)?"visible":"hidden"}`} onClick={endGuessing}>End guessing</button>
+                            <button className={`p-2 w-3/4 self-center bg-yellow-300 font-medium text-sm rounded-xl h-1/2 ${(player?.role === "operative" && player?.team === currentTeam && winner=== undefined)?"visible":"hidden"}`} onClick={endGuessing}>End guessing</button>
                         </div>
                         :
-                        (player?.team === currentTeam && player?.role ==="spymaster" && !winner)?
+                        (player?.team === currentTeam && player?.role ==="spymaster" && winner === undefined)?
                             <ClueInput key={"clueInput"} giveClue={clueHandler} />:
                             <div key={"waiting"} className="flex flex-row w-3/4 p-2 gap-4 h-1/12 items-center justify-center text-xl font-thin">
                                 Waiting for clue
@@ -580,7 +587,7 @@ function Game(){
                         }
                     </div>
                 </div>
-                <div className={`${winner != undefined?"visible":"hidden"} rounded-2xl bg-white ring-8 ring-${winner}-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl font-extrabold uppercase text-center w-1/4`}>
+                <div className={`${winner != undefined?"visible":"hidden"} rounded-2xl bg-white ring-8 ${winner==="blue"?"ring-blue-800":"ring-red-800"} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl font-extrabold uppercase text-center w-1/4`}>
                     <div>
                         {winner} team is the winner!
                     </div>
