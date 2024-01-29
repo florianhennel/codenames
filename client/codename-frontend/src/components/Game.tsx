@@ -262,7 +262,7 @@ function Game(){
             setTries(0);
         }
     };
-    socket?.once('get-guess',(guessPlayer:PlayerInterface,correct:boolean,blue_red:boolean,key:string,newBlueCardsLeft:Number,newRedCardsLeft:Number,grayCard:boolean,newTries:number,newcurrentTeam:"blue"|"red")=>{
+    socket?.on('get-guess',(guessPlayer:PlayerInterface,correct:boolean,blue_red:boolean,key:string,newBlueCardsLeft:Number,newRedCardsLeft:Number,grayCard:boolean,newTries:number,newcurrentTeam:"blue"|"red")=>{
         reveal(key);
         if (clue) {
             console.log(newcurrentTeam);
