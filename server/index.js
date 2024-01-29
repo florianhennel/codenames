@@ -106,7 +106,7 @@ io.on("connection", (socket) => {
       }
 
       if (!updatedDocument) {
-        console.error("Document not found");
+        //console.error("Document not found");
         // Handle the case where the document is not found
       }
 
@@ -258,10 +258,10 @@ io.on("connection", (socket) => {
   socket.on("newGame", (newGameId, gameid) => {
     socket.to(gameid).emit("new-game", newGameId);
   });
-  socket.on("disconnect", async () => {
+  socket.on("disconnect", async (reason) => {
     const name = socket.data.name;
     const gameid = socket.data.game;
-    console.log(name + " disconnected from: " + gameid);
+    console.log(name + " disconnected from: " + gameid,reason);
     io.to(gameid).emit("userLeft", name);
   });
   socket.on("connect_error", (err) => {

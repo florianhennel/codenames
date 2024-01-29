@@ -265,6 +265,7 @@ function Game(){
     socket?.once('get-guess',(guessPlayer:PlayerInterface,correct:boolean,blue_red:boolean,key:string,newBlueCardsLeft:Number,newRedCardsLeft:Number,grayCard:boolean,newTries:number,newcurrentTeam:"blue"|"red")=>{
         reveal(key);
         if (clue) {
+            console.log(newcurrentTeam);
             if (correct) {
                 setBlueCardsLeft(Number(newBlueCardsLeft));
                 setRedCardsLeft(Number(newRedCardsLeft));
@@ -551,7 +552,7 @@ function Game(){
                 </div>
                 
                 <div className="flex flex-col w-1/2 h-full items-center justify-start -mt-10">
-                    <div key={"cards"} className={`flex flex-row flex-wrap justify-between aspect-square h-11/12 ${winner!=undefined?"hidden":"visible"}`}>
+                    <div key={"cards"} className={`flex flex-row flex-wrap justify-between aspect-square h-11/12`}>
                         {
                             game?.cards.map(card=>(
                                 <Card color={card.team} img={card.img} currentTeam={currentTeam!} givenClue={givenClue!} guess={guess} player={player!} cardsLeft={currentTeam==="blue"?blueCardsLeft:redCardsLeft} grayCards={grayCards} revealed={revealedCards.includes(card.img)} hint={clickOnCard} hinted={hintedCards.includes(card.img)} />
@@ -587,9 +588,9 @@ function Game(){
                         }
                     </div>
                 </div>
-                <div className={`${winner != undefined?"visible":"hidden"} rounded-2xl bg-white ring-8 ${winner==="blue"?"ring-blue-800":"ring-red-800"} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl font-extrabold uppercase text-center w-1/4`}>
+                <div className={`${winner != undefined?"visible":"hidden"} rounded-2xl bg-white ring-8 ${winner==="blue"?"ring-blue-800":"ring-red-800"} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl font-extrabold uppercase text-center w-1/4 opacity-75`}>
                     <div>
-                        {winner} team is the winner!
+                        {winner} team won!
                     </div>
                     <button className={`p-2 w-2/3 self-center bg-yellow-300 font-medium text-sm rounded-xl h-1/2 ${name===admin?"visible":"hidden "}`} onClick={newGame}>New Game</button>
                 </div>
