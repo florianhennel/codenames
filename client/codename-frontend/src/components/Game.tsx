@@ -523,7 +523,7 @@ function Game(){
         <div className={` h-dvh w-dvw bg-gradient-to-br ${currentTeam==="blue"?" from-cyan-800 to-cyan-700":" from-rose-800 to-rose-700"} max-h-screen`}>
             <div className=" h-1/12 flex flex-row justify-between mx-20">
                 <div className=" w-1/6 flex flex-col items-center">
-                    <button className={`capitalize bg-yellow-400 rounded-2xl text-center flex p-4 m-2 gap-2 items-center`} onClick={clickOnPlayersBtn}>Players <img className=" w-4" src="/images/icons/icon_player.png" alt="" /> <span>{game.players.length}</span></button>
+                    <button className={`capitalize bg-yellow-400 rounded-2xl text-center flex p-4 m-2 gap-2 items-center`} onClick={clickOnPlayersBtn}>Players <img className=" w-4" src="/images/icons/icon_player.png" alt="" /> <span>{players.length}</span></button>
                     <div className={` relative bg-white opacity-95 p-3 ${playersBtn?"visible":"hidden"} w-full rounded-md flex flex-col gap-2 items-center`}>
                         <div>Players in this room:</div>
                         <div>
