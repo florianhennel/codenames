@@ -73,7 +73,9 @@ function Game(){
     const [playerSettingsBtn,setPlayerSettingsBtn] = useState<boolean>(false);
     const [namechangeInput,setNameChangeInput] = useState<string>("");
     const fetchingGame = async () => {
-        const response = await fetch(`https://codenames-backend-rgry.onrender.com/${gameID}`, {
+        const url =`https://codenames-backend-rgry.onrender.com/${gameID}`;
+        //const url = `http://localhost:3000/${gameID}`;
+        const response = await fetch(url, {
             method: "GET",
             headers:{
                 'Content-Type': 'application/json',
@@ -262,16 +264,14 @@ function Game(){
             setTries(0);
         }
     };
-    socket?.on('get-guess',(guessPlayer:PlayerInterface,correct:boolean,blue_red:boolean,key:string,newBlueCardsLeft:Number,newRedCardsLeft:Number,grayCard:boolean,newTries:number,newcurrentTeam:"blue"|"red")=>{
+    socket?.once('get-guess',(guessPlayer:PlayerInterface,correct:boolean,blue_red:boolean,key:string,newBlueCardsLeft:Number,newRedCardsLeft:Number,grayCard:boolean,newTries:number)=>{
         reveal(key);
         if (clue) {
-            console.log(newcurrentTeam);
             if (correct) {
                 setBlueCardsLeft(Number(newBlueCardsLeft));
                 setRedCardsLeft(Number(newRedCardsLeft));
                 setTries(newTries);
-                
-                if (currentTeam != newcurrentTeam || newTries === 0) {
+                if (newTries === 0) {
                     setCurrentTeam(currentTeam==="blue"?"red":"blue");
                     setHintedCards([]);
                     setGivenClue(false);
@@ -562,7 +562,7 @@ function Game(){
                         }
                     </div>
                     {
-                        givenClue?
+                        givenClue===true?
                         <div key={"clue"} className={`flex flex-col h-1/12 ${winner=== undefined?"visible":"hidden"}`}>
                             <div className={` flex flex-row m-4 p-2 gap-4 items-center uppercase justify-center text-3xl bg-white font-bold ring-2 ring-black rounded-xl`}>
                             {clue?.text +" " + clue?.number}

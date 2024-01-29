@@ -18,8 +18,10 @@ function Home(){
         localStorage.setItem('game', JSON.stringify(existingList));
       }
     const createNewRoom = async () => {
+        const url = "https://codenames-backend-rgry.onrender.com/createRoom";
+        //const url = "http://localhost:3000/createRoom";
         if (nameInput.length>0) {
-            const response = await fetch("https://codenames-backend-rgry.onrender.com/createRoom",{
+            const response = await fetch(url,{
                 method:"POST",
                 headers: {
                     'Content-Type': 'application/json'

@@ -214,7 +214,7 @@ io.on("connection", (socket) => {
       if(!correct || lastTrie) game.currentClue = null;
       await game.save();
       console.log("correct: ",correct, "blue_red: ",blue_red,key,newBlueCardsLeft,newRedCardsLeft,grayCard,"newTries: ",newTries, "newCurrentTeam: ",newCurrentTeam, "lastTrie: ",lastTrie);
-      socket.to(gameid).emit("get-guess",player,correct,blue_red,key,newBlueCardsLeft,newRedCardsLeft,grayCard,newTries,newCurrentTeam);
+      socket.to(gameid).emit("get-guess",player,correct,blue_red,key,newBlueCardsLeft,newRedCardsLeft,grayCard,newTries);
     }
   );
   socket.on("end-guessing", async (gameid) => {
