@@ -72,6 +72,7 @@ function Game(){
     const [playersBtn,setPlayersBtn] = useState<boolean>(false);
     const [playerSettingsBtn,setPlayerSettingsBtn] = useState<boolean>(false);
     const [namechangeInput,setNameChangeInput] = useState<string>("");
+    const [players,setPlayers] = useState<PlayerInterface[]>([]);
     const fetchingGame = async () => {
         const url =`https://codenames-backend-rgry.onrender.com/${gameID}`;
         //const url = `http://localhost:3000/${gameID}`;
@@ -117,6 +118,7 @@ function Game(){
             setGameLog(game.game_log);
             setTries(game.tries);
             setAdmin(game.admin);
+            setPlayers(game.players);
             let existingplayer = game.blueTeam.players.find(p=>p.name===name);
             if (existingplayer === undefined) {
                 existingplayer = game.redTeam.players.find(p=>p.name===name);
@@ -142,6 +144,9 @@ function Game(){
         setBluePlayers(bluePlayers.filter(pl=>pl.name!=user));
         setRedPlayers(redPlayers.filter(pl=>pl.name!=user));
     });
+    socket?.once("joined-game",(newPlayer:PlayerInterface)=>{
+        setPlayers([...players,newPlayer]);
+    })
     const joinTeam = (color:"blue"|"red", role:"operative"|"spymaster")=>{
         setTeam(color);
         if (color ==="blue") {
@@ -523,7 +528,7 @@ function Game(){
                         <div>Players in this room:</div>
                         <div>
                             {
-                                game.players && game.players.map(p=>(
+                                players && players.map(p=>(
                                     <Player player={p} />
                                 ))
                             }

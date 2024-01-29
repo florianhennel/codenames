@@ -73,6 +73,7 @@ io.on("connection", (socket) => {
       console.error("Error updating document:", err);
       // Handle the error appropriately
     }
+    socket.to(gameid).emit("joined-game",newPlayer);
   });
   socket.on("join-team", async (name, color, role, gameid) => {
     console.log(name, "joined", color, "team as a(n)", role);
