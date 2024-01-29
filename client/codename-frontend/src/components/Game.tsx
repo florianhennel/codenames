@@ -271,12 +271,13 @@ function Game(){
                 setRedCardsLeft(Number(newRedCardsLeft));
                 setTries(newTries);
                 
-                if (currentTeam != newcurrentTeam) {
+                if (currentTeam != newcurrentTeam || newTries === 0) {
                     setCurrentTeam(currentTeam==="blue"?"red":"blue");
                     setHintedCards([]);
                     setGivenClue(false);
                     setClue(undefined);
                     setTries(0);
+                    console.log("asd");
                 }
             }else if(blue_red){
                 setBlueCardsLeft(newBlueCardsLeft);
