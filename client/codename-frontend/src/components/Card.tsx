@@ -60,8 +60,8 @@ function Card({img,color,player,givenClue,currentTeam,guess,cardsLeft,grayCards,
             }
         }
       }, [cardsLeft,grayCards,revealed]);
-    const card = <div key={img} className={` relative aspect-square w-full h-full cursor-pointer`}>
-            <img onLoad={Load} className={` w-full h-full object-cover ${guessed?"hidden":"visible"}`} src={`../images/cards/card-${img}.jpg`} data-key={img} alt="" onClick={clickOnCard} />
+    const card = <div key={img} className={` relative aspect-square cursor-pointer`}>
+            <img onLoad={Load} className={` ${guessed?"hidden":"visible"}`} src={`../images/cards/card-${img}.jpg`} data-key={img} alt="" onClick={clickOnCard} />
             <button data-key={img} data-color={color} className={`bg-tap-icon bg-cover w-10 h-10 absolute -top-3 -right-3 ${(!player?.team||currentTeam != player?.team || player.role ==="spymaster"|| !givenClue || revealed || guessed)?"hidden":"visible"}`} onClick={clickOnGuess}></button>
             <span data-key={img} onClick={clickOnCard} className={`text-5xl m-1 -translate-y-2 absolute font-bold ${currentTeam==="red"?"text-red-600":"text-blue-700"} top-0 left-0 ${(clicked && !guessed)?"visible":"hidden"}`}>?</span>
             <span className={`w-4 h-4 absolute top-2 right-2 ${color==="blue" && "bg-blue-800"} ${color==="red" && "bg-red-500"} ${color==="black" && "bg-black"} ${(player?.role ==="spymaster" && !guessed)?"visible":"hidden"}`}></span>

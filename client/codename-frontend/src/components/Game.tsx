@@ -520,7 +520,7 @@ function Game(){
     } 
     else{
        return (
-        <div className={` h-dvh w-dvw bg-gradient-to-br ${currentTeam==="blue"?" from-cyan-800 to-cyan-700":" from-rose-800 to-rose-700"} max-h-screen`}>
+        <div className={` h-dvh w-full bg-gradient-to-br ${currentTeam==="blue"?" from-cyan-800 to-cyan-700":" from-rose-800 to-rose-700"} max-h-screen`}>
             <div className=" h-1/12 flex flex-row justify-between mx-20">
                 <div className=" w-1/6 flex flex-col items-center">
                     <button className={`capitalize bg-yellow-400 rounded-2xl text-center flex p-4 m-2 gap-2 items-center`} onClick={clickOnPlayersBtn}>Players <img className=" w-4" src="/images/icons/icon_player.png" alt="" /> <span>{players.length}</span></button>
@@ -551,14 +551,12 @@ function Game(){
                 
                 
             </div>
-            <div className="w-full h-11/12 flex flex-row gap-5 -mt-4">
-                <div className="w-1/4 h-full">
-                    <TeamCard color="red" cardsLeft={redCardsLeft} isInTeam={team!=null} join={joinTeam} team={redPlayers} />
-                    <div></div>
-                </div>
-                
-                <div className="flex flex-col w-1/2 h-full items-center justify-start -mt-10">
-                    <div key={"cards"} className={`flex flex-row flex-wrap justify-between aspect-square h-11/12`}>
+            <div className="grid grid-cold-3 grid-rows-3 lg:grid-rows-2 lg:grid-cols-4 w-svw max-w-full h-11/12 gap-5 -mt-4 items-center">
+                <div className=" h-full row-start-3 lg:row-start-1">
+                    <TeamCard color="red" cardsLeft={redCardsLeft} isInTeam={team!=null} join={joinTeam} team={redPlayers} /> 
+                </div>      
+                <div className="flex flex-col items-center gap-8 -mt-14 lg:col-span-2 lg:col-start-2 col-start-1 row-span-2 col-span-3 ">
+                    <div key={"cards"} className={` grid grid-cols-5 justify-center items-center gap-2 h-11/12 max-w-sm md:max-w-lg lg:max-w-3xl aspect-square`}>
                         {
                             game?.cards.map(card=>(
                                 <Card color={card.team} img={card.img} currentTeam={currentTeam!} givenClue={givenClue!} guess={guess} player={player!} cardsLeft={currentTeam==="blue"?blueCardsLeft:redCardsLeft} grayCards={grayCards} revealed={revealedCards.includes(card.img)} hint={clickOnCard} hinted={hintedCards.includes(card.img)} />
@@ -582,10 +580,11 @@ function Game(){
                             </div>
                     }
                 </div>
-                
-                <div className=" w-1/4 h-full">
+                <div className=" h-full row-start-3 lg:row-start-1 col-start-3 lg:col-start-4">
                     <TeamCard color="blue" cardsLeft={blueCardsLeft} isInTeam={team!=null} join={joinTeam} team={bluePlayers} />
-                    <div className="bg-white h-1/2 rounded-lg w-3/4 mx-16  flex flex-col opacity-75">
+                </div>
+                
+                <div className="bg-white h-full rounded-lg w-3/4 mx-16 place-self-start flex flex-col opacity-75 self-start col-start-2 lg:col-start-4">
                         <div className=" place-self-center scroll-m-0 overflow-auto flex flex-col gap-4">Game Log</div>
                         {
                             gameLog && gameLog.map(log=>(
@@ -593,7 +592,6 @@ function Game(){
                             ))
                         }
                     </div>
-                </div>
                 <div className={`${winner != undefined?"visible":"hidden"} rounded-2xl bg-white ring-8 ${winner==="blue"?"ring-blue-800":"ring-red-800"} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl font-extrabold uppercase text-center w-1/4 opacity-75`}>
                     <div>
                         {winner} team won!

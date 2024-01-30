@@ -22,7 +22,7 @@ function TeamCard({color,cardsLeft,isInTeam,join,team}:Props){
         setTeamState(team);
     },[team]);
     return(
-        <div className={`${color==="blue"?" bg-blueBgColor":" bg-redBgColor"} rounded-3xl m-5 flex p-6 ring-1 ring-black shadow-2xl max-h-1/2 min-h-1/4`}>
+        <div className={`${color==="blue"?" bg-blueBgColor":" bg-redBgColor"} rounded-3xl m-5 flex p-6 ring-1 ring-black shadow-2xl min-h-1/4`}>
             <div className="flex flex-col w-full h-full">
                 <div className=' flex flex-row justify-between h-1/2'>
                     {
