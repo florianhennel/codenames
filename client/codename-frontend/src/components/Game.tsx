@@ -524,7 +524,7 @@ function Game(){
             <div className=" h-1/12 flex flex-row justify-between mx-20">
                 <div className=" w-1/6 flex flex-col items-center">
                     <button className={`capitalize bg-yellow-400 rounded-2xl text-center flex p-4 m-2 gap-2 items-center`} onClick={clickOnPlayersBtn}>Players <img className=" w-4" src="/images/icons/icon_player.png" alt="" /> <span>{players.length}</span></button>
-                    <div className={` relative bg-white opacity-95 p-3 ${playersBtn?"visible":"hidden"} w-full rounded-md flex flex-col gap-2 items-center`}>
+                    <div className={` relative bg-white opacity-95 lg:p-3 ${playersBtn?"visible":"hidden"} w-full rounded-md flex flex-col gap-2 items-center z-20`}>
                         <div>Players in this room:</div>
                         <div>
                             {
@@ -540,7 +540,7 @@ function Game(){
 
                 <div className="w-1/6 flex flex-col items-center">
                     <button className={`capitalize bg-yellow-400 rounded-2xl text-center flex p-4 m-2 gap-2 items-center`} onClick={clickOnPlayerSettingsBtn}>{name} <img className=" w-4" src="/images/icons/icon_player.png" alt="" /></button>
-                    <div className={` relative bg-white opacity-95 p-3 ${playerSettingsBtn?"visible":"hidden"} w-full rounded-md flex flex-col  gap-2 justify-center items-center`}>
+                    <div className={` relative bg-white opacity-95 lg:p-3 ${playerSettingsBtn?"visible":"hidden"} w-full rounded-md flex flex-col  gap-2 justify-center items-center z-20`}>
                         <div>Nickname</div>
                         <input className=" rounded-md ring-1 ring-black w-3/4 p-1" type="text" name="" id="" onChange={(event)=>setNameChangeInput(event.target.value)} />
                         <button className=" w-2/3 capitalize bg-yellow-400 rounded-2xl text-center p-2 text-md" onClick={changeNickname}>Change Nickname</button>
@@ -551,12 +551,12 @@ function Game(){
                 
                 
             </div>
-            <div className="grid grid-cold-3 grid-rows-3 lg:grid-rows-2 lg:grid-cols-4 w-svw max-w-full h-11/12 gap-5 -mt-4 items-center">
+            <div className="grid grid-cols-3 grid-rows-3 lg:grid-rows-2 lg:grid-cols-4 h-11/12 gap-3 -mt-4 items-center z-10">
                 <div className=" h-full row-start-3 lg:row-start-1">
                     <TeamCard color="red" cardsLeft={redCardsLeft} isInTeam={team!=null} join={joinTeam} team={redPlayers} /> 
                 </div>      
-                <div className="flex flex-col items-center gap-8 -mt-14 lg:col-span-2 lg:col-start-2 col-start-1 row-span-2 col-span-3 ">
-                    <div key={"cards"} className={` grid grid-cols-5 justify-center items-center gap-2 h-11/12 max-w-sm md:max-w-lg lg:max-w-3xl aspect-square`}>
+                <div className="flex flex-col items-center lg:gap-8 lg:-mt-14 lg:col-span-2 lg:col-start-2 col-start-1 row-span-2 col-span-3 ">
+                    <div key={"cards"} className={` grid grid-cols-5 justify-center items-center gap-2 h-11/12 max-w-xs md:max-w-md lg:max-w-3xl aspect-square`}>
                         {
                             game?.cards.map(card=>(
                                 <Card color={card.team} img={card.img} currentTeam={currentTeam!} givenClue={givenClue!} guess={guess} player={player!} cardsLeft={currentTeam==="blue"?blueCardsLeft:redCardsLeft} grayCards={grayCards} revealed={revealedCards.includes(card.img)} hint={clickOnCard} hinted={hintedCards.includes(card.img)} />
@@ -584,7 +584,7 @@ function Game(){
                     <TeamCard color="blue" cardsLeft={blueCardsLeft} isInTeam={team!=null} join={joinTeam} team={bluePlayers} />
                 </div>
                 
-                <div className="bg-white h-full rounded-lg w-3/4 mx-16 place-self-start flex flex-col opacity-75 self-start col-start-2 lg:col-start-4">
+                <div className="bg-white h-full rounded-lg w-3/4 lg:mx-16 lg:mt-4 place-self-center self-center lg:place-self-start flex flex-col opacity-75 lg:self-start col-start-2 lg:col-start-4">
                         <div className=" place-self-center scroll-m-0 overflow-auto flex flex-col gap-4">Game Log</div>
                         {
                             gameLog && gameLog.map(log=>(
