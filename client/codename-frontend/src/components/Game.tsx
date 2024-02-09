@@ -423,7 +423,7 @@ function Game(){
         setPlayerSettingsBtn(!playerSettingsBtn);
     }
     const copyInvitationLink = ()=>{
-        navigator.clipboard.writeText(`https://codenames-backend-rgry.onrender.com/game/${gameID}`);
+        navigator.clipboard.writeText(`https://codenames-frontend-hf8p.onrender.com/game/${gameID}`);
         setPlayersBtn(false);
     }
     const changeNickname = ()=>{
